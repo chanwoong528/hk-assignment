@@ -40,6 +40,18 @@ const updateArticle = async (id, articleParam) => {
     throw error;
   }
 }
+const deleteArticle = async (id) => {
+  try {
+    const article = await Article.findByPk(id);
+    if (!article) {
+      throw new CustomError("NotFoundError", "result not found in database");
+    }
+    await article.destroy();
+    return article.dataValues;
+  } catch (error) {
+    throw error;
+  }
+}
 
 
 
@@ -47,5 +59,6 @@ module.exports = {
   createArticle,
   getArticles,
   getSingleArticle,
-  updateArticle
+  updateArticle,
+  deleteArticle
 }

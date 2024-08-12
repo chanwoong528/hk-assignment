@@ -6,7 +6,8 @@ const {
   createArticle,
   getArticles,
   getSingleArticle,
-  updateArticle
+  updateArticle,
+  deleteArticle
 } = require("../service/articleService");
 
 const expressRouter = require("express");
@@ -74,55 +75,18 @@ router.patch("/:id", async (req, res) => {
       .send(ERROR_CODE[error.name]);
   });
 })
-
-
-// router.patch("/:id", isAdmin, async (req, res) => {
-//   const { title, content, type, isPresented } = req.body;
-//   const { id } = req.params;
-
-//   try {
-//     const targetPost = await getPost(id);
-
-//     if (!targetPost) {
-//       throw new CustomError("NotFoundError", "result not found in database");
-//     }
-//     const updatedPost = await updatePost(id, {
-//       title,
-//       content,
-//       type,
-//       isPresented,
-//     });
-//     return res
-//       .status(RESPONSE_CODE["patch"](updatedPost).code)
-//       .send(RESPONSE_CODE["patch"](updatedPost));
-//   } catch (error) {
-//     console.warn(error);
-//     return res.status(ERROR_CODE[error.name].code).send(ERROR_CODE[error.name]);
-//   }
-// });
-
-// router.delete("/:id", isAdmin, async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     const targetPost = await getPost(id);
-//     if (!targetPost) {
-//       throw new CustomError("NotFoundError", "result not found in database");
-//     }
-
-//     const targetDeletePost = await deletePost(id);
-//     if (targetDeletePost > 0) {
-//       return res
-//         .status(RESPONSE_CODE["delete"]().code)
-//         .send(RESPONSE_CODE["delete"]());
-//     }
-
-//     return res
-//       .status(RESPONSE_CODE["delete"]().code)
-//       .send(RESPONSE_CODE["delete"]());
-//   } catch (error) {
-//     return res.status(ERROR_CODE[error.name].code).send(ERROR_CODE[error.name]);
-//   }
-// });
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  deleteArticle(id).then((result) => {
+    return res
+      .status(RESPONSE_CODE["delete"](result).code)
+      .send(RESPONSE_CODE["delete"]());
+  }).catch((error) => {
+    console.warn(error);
+    return res
+      .status(ERROR_CODE[error.name].code)
+      .send(ERROR_CODE[error.name]);
+  });
+})
 
 module.exports = router;

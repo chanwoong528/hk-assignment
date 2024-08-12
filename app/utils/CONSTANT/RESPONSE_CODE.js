@@ -30,7 +30,7 @@ const RESPONSE_CODE = {
   delete: () => {
     return {
       message: "Data Delete Succeeded",
-      code: 204,
+      code: 201,
     };
   },
 };
