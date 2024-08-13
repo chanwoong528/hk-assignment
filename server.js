@@ -9,7 +9,7 @@ db.sequelize.sync();
 
 
 let corOptions = {
-  origin: "http://localhost:8081",
+  origin: "http://localhost:5173",
 };
 
 app.use(cors(corOptions));
